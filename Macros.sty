@@ -1,0 +1,260 @@
+\ProvidesPackage{Macros}
+
+\usepackage[utf8]{inputenc}
+
+\usepackage{amsfonts}
+\newcommand{\NN}{  \mathbb{N} } % Natural numbers
+\newcommand{\RR}{  \mathbb{R} } % Real numbers
+\newcommand{\CC}{  \mathbb{C} } % Complex numbers	
+\newcommand{\EE}{  \mathbb{E} } % Fiel (R or C)	
+\newcommand{\ZZ}{  \mathbb{Z} } % Integers
+\newcommand{\QQ}{  \mathbb{Q} } % Racionais
+\newcommand{\TT}{  \mathbb{T} } % Toro
+
+\newcommand{\ii}{\mathrm{i}\mkern1mu}   % Imaginary 
+\newcommand{\ee}{\mathrm{e}\mkern1mu}   % e
+
+
+\newcommand\Sum{\sum\limits}	% \Sum_{i=1}^10
+\newcommand\Lim{\lim\limits}
+
+\usepackage{xparse}
+
+\NewDocumentCommand\quotes{m}{``#1''}
+
+\usepackage{ifthen}
+\usepackage{forloop}
+
+% Use $\C{ x }, \C[1]{ x }, \C[2]{ x }$ to write (x), [x], {x} respec.   
+\NewDocumentCommand\C{om}
+{\!
+  \IfNoValueTF{#1}{\left(#2\right)}                       
+  {
+    \ifthenelse{\equal{#1}{*}}{   #2   }{}    
+    \ifthenelse{\equal{#1}{**}}{   #2   }{}    
+    \ifthenelse{\equal{#1}{0}}{\left(   #2   \right)}{}    
+    \ifthenelse{\equal{#1}{00}}{\left(   #2   \right)}{}    
+    \ifthenelse{\equal{#1}{0*}}{\left(   #2   \right.}{}    
+    \ifthenelse{\equal{#1}{*0}}{\left.   #2   \right)}{}    
+    \ifthenelse{\equal{#1}{1}}{\left[   #2   \right]}{}
+    \ifthenelse{\equal{#1}{11}}{\left[   #2   \right]}{}
+    \ifthenelse{\equal{#1}{1*}}{\left[   #2   \right.}{}
+    \ifthenelse{\equal{#1}{*1}}{\left.   #2   \right]}{}
+    \ifthenelse{\equal{#1}{01}}{\left(   #2   \right]}{}
+    \ifthenelse{\equal{#1}{10}}{\left[   #2   \right)}{}
+    \ifthenelse{\equal{#1}{2}}{\left\{   #2   \right\}}{}
+    \ifthenelse{\equal{#1}{22}}{\left\{   #2   \right\}}{}
+    \ifthenelse{\equal{#1}{2*}}{\left\{   #2   \right.}{}
+    \ifthenelse{\equal{#1}{*2}}{\left.    #2   \right\}}{}
+    \ifthenelse{\equal{#1}{3}}{\left|   #2   \right| }{}
+    \ifthenelse{\equal{#1}{|}}{\left|   #2   \right| }{}
+    \ifthenelse{\equal{#1}{4}}{\left\|   #2   \right\| }{}
+    \ifthenelse{\equal{#1}{||}}{\left\|   #2   \right\| }{}
+    \ifthenelse{\equal{#1}{<}}{ \hspace{0.04cm} \langle  #2   
+      \rangle }{}
+    \ifthenelse{\equal{#1}{20}}{\left\{   #2   \right.}{}  
+  }
+}
+
+\NewDocumentCommand\norm{m}{\C[4]{#1}}
+
+
+
+%Atalho para derivada parcial com frac, 
+% \pd<k>{f}{x}[x_0] ser� a derivada parcial de ordem k da 
+%fun��o 
+%f em rela��o x, calculada em x_0
+% \pd* coloca a derivada parcial como operador, o ponto de 
+%avalia��o de x_0 tamb�m � opcional
+\NewDocumentCommand\pd{sD<>{}mmo} 
+{
+  \IfNoValueTF{#5}
+  {
+    \IfBooleanTF#1
+    {\frac{ \partial^{#2}   } {\partial#4} #3 }
+    {\frac{ \partial^{#2}  #3 } {\partial#4} }
+  }
+  {
+    \IfBooleanTF#1
+    {\left. \frac{ \partial^{#2}   } {\partial#4} #3   
+      \right|_{#5}  }
+    {\frac{ \partial^{#2}  #3 } {\partial#4}  \left(  #5  
+      \right)  }
+  }
+}
+
+%Atalho para derivada parcial em uma linha: del f / del x
+\NewDocumentCommand\pdl{D<>{}mm} 
+{
+  \partial^{#1}  #2 / \partial #3 
+}
+
+
+%Atalho para derivada simples em uma linha: d f / d x
+\NewDocumentCommand\ddl{D<>{}mD<>{t}} 
+{
+  \mathrm{d}^{#1}  #2 / \mathrm{d} #3 
+}
+
+%Atalho para derivada de uma vari�vel, 
+% \dd<k>{f}[x][x_0] ser� a diferencial de ordem k da fun��o f 
+%em 
+%rela��o x, calculada em x_0
+% \dd* coloca a derivada parcial como operador, o ponto de 
+%avalia��o de x_0 tamb�m � opcional
+% se [x] n�o � dado, utiliza t como padr�o
+\NewDocumentCommand\dd{sD<>{}mO{t}o} 
+{
+  \IfBooleanTF#1 %Se tem estrela, coloca a fun��o do lado de 
+  %fora da fra��o
+  {
+    \IfNoValueTF{#5}
+    {\frac{\mathrm{d}^{#2}      }{\mathrm{d}{#4}^{#2}}  #3}
+    {\left.   \frac{\mathrm{d}^{#2}      
+      }{\mathrm{d}{#4}^{#2}}  
+      #3  \right|_{#5}  }
+  }
+  {
+    \IfNoValueTF{#5}
+    {\frac{\mathrm{d}^{#2}  #3    }{\mathrm{d}{#4}^{#2}}  }
+    {\frac{\mathrm{d}^{#2}  #3   }{\mathrm{d}{#4}^{#2}}  
+      \left(  
+      #5 \right)  }
+  }
+}
+
+
+%Atalho para derivada de uma vari�vel, 
+% \Dd<k>{f}[x][x_0] ser� a diferencial de ordem k da fun��o f 
+%em 
+%rela��o x, calculada em x_0
+% \Dd* coloca a derivada parcial como operador, o ponto de 
+%avalia��o de x_0 tamb�m � opcional
+% se [x] n�o � dado, utiliza t como padr�o
+\NewDocumentCommand\Dd{sD<>{}mO{t}o} 
+{
+  \IfBooleanTF#1 %Se tem estrela, coloca a fun��o do lado de 
+  %fora da fra��o
+  {
+    \IfNoValueTF{#5}
+    {\Frac{\mathrm{d}^{#2}      }{\mathrm{d}{#4}^{#2}}  #3}
+    {\left.   \Frac{\mathrm{d}^{#2}      
+      }{\mathrm{d}{#4}^{#2}}  
+      #3  \right|_{#5}  }
+  }
+  {
+    \IfNoValueTF{#5}
+    {\Frac{\mathrm{d}^{#2}  #3    }{\mathrm{d}{#4}^{#2}}  }
+    {\Frac{\mathrm{d}^{#2}  #3   }{\mathrm{d}{#4}^{#2}}  
+      \left(  
+      #5 \right)  }
+  }
+}
+
+
+
+%Atalho para integral
+% $\Int[a][b]{f(x)}{x}$
+\NewDocumentCommand\Int{D<>{0}O{}O{}mm} 
+{
+  \ifthenelse{\equal{#1}{0}}{  {\displaystyle\int_{#2}^{#3}{ \! 
+        #4 }\, \mathrm{d} #5}    }{}    
+  \ifthenelse{\equal{#1}{1}}{  {\int_{#2}^{#3}{ \! #4 }\, 
+      \mathrm{d} #5}    }{}    
+  \ifthenelse{\equal{#1}{2}}{  {\bigintssss_{#2}^{#3}{ \! #4 
+      }\, 
+      \mathrm{d} #5}    }{}
+  \ifthenelse{\equal{#1}{3}}{  {\bigintsss_{#2}^{#3}{ \! #4 }\, 
+      \mathrm{d} #5}    }{}
+  \ifthenelse{\equal{#1}{4}}{  {\bigintss_{#2}^{#3}{ \!\! #4 
+      }\, 
+      \mathrm{d} #5}    }{}
+  \ifthenelse{\equal{#1}{5}}{  {\bigints_{#2}^{#3}{ \!\!\! #4 
+      }\, \mathrm{d} #5}    }{}
+  \ifthenelse{\equal{#1}{6}}{  {\bigint_{#2}^{#3}{ \!\!\!\! #4 
+      }\, \mathrm{d} #5}    }{}
+}
+
+
+% Sequências
+% $\s{V}[m] = V1, ...., Vm$ 
+% \s*{m} = {1, ..., m}
+\NewDocumentCommand{\s}{sD<>{1}mD<>{1}o}{
+	\IfNoValueTF{#5}
+	{
+		\IfBooleanTF#1
+		{\C[2]{#2, \ldots, #3}}
+		{#2, \ldots, #3}		
+	}
+	{
+		\IfBooleanTF#1
+		{\C[2]{  #3_{#4} , \ldots, #3_{#5}}}
+		{ #3_{#4} , \ldots, #3_{#5}}
+	}
+}
+
+
+\usepackage{amsmath}
+
+\RenewDocumentCommand\matrix{m} 
+{ 
+  \begin{pmatrix}
+    #1
+  \end{pmatrix}
+}
+
+
+\NewDocumentCommand\Det{m} 
+{ 
+  \begin{vmatrix}
+    #1
+  \end{vmatrix}
+}
+
+
+\NewDocumentCommand\rcl{sm} 
+{
+  \IfBooleanTF#1
+  {\begin{array}{rclclclclclclclcl} #2 \end{array}}
+  {\begin{array}{rclclclclclclclcl} #2 \end{array}}
+}
+
+\NewDocumentCommand\lcl{sm} 
+{
+  \IfBooleanTF#1
+  {\C[20] {\begin{array}{lclclclclclclclclc}    #2   
+  \end{array}}}
+  {\begin{array}{lclclclclclclclclc}    #2 \end{array}}
+}
+
+\NewDocumentCommand\lll{sm} 
+{
+  \IfBooleanTF#1
+  { \left\{   \begin{array}{lllllllllllllllll}    #2   
+  \end{array}     \right.        }              
+  {\begin{array}{lllllllllllllllll}    #2 \end{array}}
+}
+
+
+\NewDocumentCommand\crcl{m} 
+{
+  \begin{array}{crcl}
+    #1
+  \end{array}
+}
+
+
+\NewDocumentCommand{\ra}{o}{  \rightarrow } 
+
+\usepackage{color}
+\NewDocumentCommand\blue{m}{{\color{blue} #1}} 
+
+
+\usepackage{amsopn}
+\DeclareMathOperator{\diag}{diag}
+\newcommand{\w}{  \omega } 
+
+\newcommand\eps{\varepsilon}
+
+
+\newcommand{\refeq}[1]{{\rm (\ref{#1})}}
